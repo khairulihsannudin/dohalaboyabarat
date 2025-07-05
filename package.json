@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "dohalaboyabarat",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -9,6 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.10.1"
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.4.1",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "^5.10.1",
+    "sharp": "^0.34.2",
+    "tailwindcss": "^4.1.11"
   }
 }

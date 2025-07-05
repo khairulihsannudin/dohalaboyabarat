@@ -1,22 +1,43 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import './src/styles/global.css';
+---
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doha Laboya Barat</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="/logo_dark.svg" alt="Doha Laboya Barat Logo" class="logo-img">
+                <span class="logo-text">Doha Laboya Barat</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/landingpage" class="nav-link">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/profil" class="nav-link">Program Kerja</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/gaura" class="nav-link">Gaura</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/wetang" class="nav-link">Wetana</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/berita" class="nav-link">Berita</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main>
+        <slot />
+    </main>
+</body>
+</html>
