@@ -1,0 +1,63 @@
+---
+// Props for the sponsor component
+export interface Props {
+  sponsors?: Array<{
+    name: string;
+    logo: string;
+    alt: string;
+    url?: string;
+  }>;
+}
+
+const { sponsors = [
+  {
+    name: "Bank NTT",
+    logo: "/bank-ntt-logo.png",
+    alt: "Bank NTT Logo",
+    url: "https://bpdntt.co.id"
+  },
+  {
+    name: "Anabatic Technologies",
+    logo: "/anabatic-logo.png", 
+    alt: "Anabatic Technologies Logo",
+    url: "https://anabatic.com"
+  }
+] } = Astro.props;
+---
+
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <!-- Title -->
+    <h2 class="text-center text-[28px] md:text-xl text-black mb-12">
+      Disponsori oleh
+    </h2>
+    
+    <!-- Sponsors Grid -->
+    <div class="flex flex-col md:flex-row items-center justify-center gap-20 md:gap-28">
+      {sponsors.map((sponsor) => (
+        <div class="">
+          {sponsor.url ? (
+            <a 
+              href={sponsor.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block transition-transform hover:scale-105 duration-300"
+            >
+              <img 
+                src={sponsor.logo}
+                alt={sponsor.alt}
+                class="h-20 md:h-[120px] lg:h-[240px] w-auto object-contain"
+              />
+            </a>
+          ) : (
+            <img 
+              src={sponsor.logo}
+              alt={sponsor.alt}
+              class="sponsor-logo h-20 md:h-[120px] lg:h-[240px] w-auto object-contain"
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

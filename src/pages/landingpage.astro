@@ -1,5 +1,55 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import Article from '../components/Article.astro';
+import HorizontalArticle from '../components/HorizontalArticle.astro';
+import Sponsor from '../components/Sponsor.astro';
+
+const galleryImages = [
+    // Top row - different sizes
+    { src: '/pantai_watukaka.png', alt: 'Pantai Watukaka 1', colSpan: 2, height: 'h-64' },
+    { src: '/pantai_watukaka.png', alt: 'Pantai Watukaka 2', colSpan: 3, height: 'h-64' },
+    { src: '/pantai_watukaka.png', alt: 'Pantai Watukaka 3', colSpan: 2, height: 'h-64' },
+    
+    // Bottom row - equal sizes
+    { src: '/pantai_watukaka.png', alt: 'Pantai Watukaka 4', colSpan: 1.75, height: 'h-48' },
+    { src: '/pantai_watukaka.png', alt: 'Pantai Watukaka 5', colSpan: 1.75, height: 'h-48' },
+    { src: '/pantai_watukaka.png', alt: 'Pantai Watukaka 6', colSpan: 1.75, height: 'h-48' },
+    { src: '/pantai_watukaka.png', alt: 'Pantai Watukaka 7', colSpan: 1.75, height: 'h-48' },
+];
+
+const stats = [
+    [
+        { number: 3902, label: 'Warga Gaura', color: 'doha-50' },
+        { number: 3902, label: 'Warga Wetana', color: 'doha-100' },
+    ],
+    [
+        { number: 'Berkebun', label: 'Pencaharian Utama Gaura', color: 'doha-50' },
+        { number: 'Bertani', label: 'Pencaharian Utama Wetana', color: 'doha-100' },
+    ],
+    [
+        { number: 12, label: 'Wisata Gaura', color: 'doha-50' },
+        { number: 24, label: 'Wisata Wetana', color: 'doha-100' }
+    ],
+]
+
+const getFlexRatio = (pair: { number: any; label: string; color: string; }[]) => {
+    const isFirstNumber = typeof pair[0].number === 'number';
+    const isSecondNumber = typeof pair[1].number === 'number';
+    
+    // If either value is not a number, return equal ratio
+    if (!isFirstNumber || !isSecondNumber) {
+        return { first: 1, second: 1 };
+    }
+
+    const total = pair[0].number + pair[1].number;
+    return {
+        first: pair[0].number / total,
+        second: pair[1].number / total
+    };
+}
+
+
 ---
 
 <Layout>
@@ -72,6 +122,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="lg:w-[120%] lg:-left-[10%] -top-30 relative overflow-x-hidden">
         <img src="/divider.svg" alt="divider"  class="w-full">
     </div>
+
     <section class="lg:mx-20 px-4 py-14 grid grid-cols-2 min-h-screen relative -top-30 bg-doha-20">
         <div class="col-span-1">
 
@@ -84,8 +135,228 @@ import Layout from '../layouts/Layout.astro';
             <article class="mt-6">
                 <p class="text-2xl text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </article>
+            <div class="space-y-4 mt-8">
+                {stats.map((pair) => {
+                    const ratio = getFlexRatio(pair);
+                    return (
+                        <div class="flex gap-4 h-32">
+                            <div 
+                                class={`bg-${pair[0].color} text-white p-6 rounded-3xl flex flex-col justify-center`}
+                                style={`flex: ${ratio.first};`}
+                            >
+                                <h3 class="text-[28px] font-bold mb-2">{pair[0].number.toLocaleString()}</h3>
+                                <p class="text-xl">{pair[0].label}</p>
+                            </div>
+                            <div 
+                                class={`bg-${pair[1].color} text-white p-6 rounded-3xl flex flex-col justify-center`}
+                                style={`flex: ${ratio.second};`}
+                            >
+                                <h3 class="text-[28px] font-bold mb-2">{pair[1].number.toLocaleString()}</h3>
+                                <p class="text-xl">{pair[1].label}</p>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    </section>
+    <section class="min-h-screen relative bg-doha-50">
+        <div class="lg:mx-20 px-4 pt-27">
+            <div class="flex items-center pb-16 gap-4">
+                <h1 class="text-[42px] w-full leading-[100%] font-extrabold text-doha-20">Program Kerja Unggulan</h1>
+                <div class="h-2 w-full bg-doha-20"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <Card 
+                    image="/foto_tim.png"
+                    imageAlt="Klaster Saintek - Tim KKN"
+                    category="Klaster Saintek"
+                    title="Pembuatan Alat Kompos Putar untuk Pembuatan Pupuk Organik"
+                    location="Desa Gaura"
+                    targetAudience="Masyarakat"
+                    link="/program/kompos-putar"
+                />
+                
+                <Card 
+                    image="/foto_tim_hd.png"
+                    imageAlt="Program Kesehatan Masyarakat"
+                    category="Klaster Kesehatan"
+                    title="Program Penyuluhan Kesehatan dan Gizi untuk Ibu Hamil"
+                    location="Desa Wetana"
+                    targetAudience="Ibu Hamil"
+                    link="/program/kesehatan-ibu-hamil"
+                />
+                
+                <Card 
+                    image="/program-pendidikan.jpg"
+                    imageAlt="Program Pendidikan Anak"
+                    category="Klaster Pendidikan"
+                    title="Bimbingan Belajar dan Literasi untuk Anak-Anak Sekolah Dasar di SD Negeri 1 Gaura"
+                    location="Desa Gaura"
+                    targetAudience="Anak-Anak"
+                    link="/program/bimbingan-belajar"
+                />
+            </div>
+            <div class="lg:py-27 text-center">
+                <a 
+                    href="/program"
+                    class="inline-flex bg-doha-20 py-2 hover:bg-doha-100 hover:text-doha-20 px-6 text-2xl rounded-full items-center  text-doha-50 transition-colors duration-300 group"
+                >
+                    Lihat Selengkapnya
+                    <svg class="w-6 h-6 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- Article Section -->
+    <section class="bg-doha-20 py-20">
+        <div class="lg:mx-20 px-4">
+            <!-- Section Header -->
+            <div class="flex items-center gap-4 mb-12">
+                <h1 class="text-[42px] leading-[100%] font-extrabold text-doha-50">Artikel Pilihan</h1>
+            </div>
+            
+            <!-- Articles Layout: Large Article on Left, 3 Horizontal Articles on Right -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Left Side: Large Article -->
+                <div>
+                    <Article 
+                        image="/foto_tim_hd.png"
+                        imageAlt="Tim KKN Doha Laboya Barat"
+                        title="Pembuatan Alat Kompos Putar untuk Pembuatan Pupuk Organik"
+                        date="Selasa, 27 Juni 2025"
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                        link="/artikel/kompos-putar"
+                    />
+                </div>
+                
+                <!-- Right Side: 3 Horizontal Articles -->
+                <div class="space-y-4">
+                    <HorizontalArticle 
+                        image="/pantai_watukaka.png"
+                        imageAlt="Program Kesehatan Masyarakat"
+                        title="Pembuatan Alat Kompos Putar untuk Pembuatan Pupuk Organik"
+                        date="Selasa, 27 Juni 2025"
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                        link="/artikel/program-kesehatan"
+                    />
+                    
+                    <HorizontalArticle 
+                        image="/foto_tim.png"
+                        imageAlt="Program Pendidikan Anak"
+                        title="Pembuatan Alat Kompos Putar untuk Pembuatan Pupuk Organik"
+                        date="Selasa, 27 Juni 2025"
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                        link="/artikel/bimbingan-belajar"
+                    />
+                    
+                    <HorizontalArticle 
+                        image="/foto_tim_hd.png"
+                        imageAlt="Program Ekonomi Kreatif"
+                        title="Pembuatan Alat Kompos Putar untuk Pembuatan Pupuk Organik"
+                        date="Selasa, 27 Juni 2025"
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                        link="/artikel/ekonomi-kreatif"
+                    />
+                </div>
+            </div>
+            
+            <!-- View More Button -->
+            <div class="text-center mt-12">
+                <a 
+                    href="/artikel"
+                    class="inline-flex bg-doha-20 py-2 hover:bg-doha-100 hover:text-doha-20 px-6 text-xl rounded-full items-center text-doha-50 transition-colors duration-300 group border border-doha-50"
+                >
+                    Lihat Selengkapnya
+                    <svg class="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="bg-[#DDDDDD] py-20">
+        <div class="lg:mx-20 px-4">
+            <!-- Section Header -->
+            <div class="flex justify-center items-center pb-16 gap-4">
+                <div class="h-2 w-full bg-doha-50"></div>
+                <h1 class="text-[42px] w-full leading-[100%] font-extrabold text-doha-50 text-center whitespace-nowrap">Galeri</h1>
+                <div class="h-2 w-full bg-doha-50"></div>
+            </div>
+            
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-auto">
+                <!-- Row 1: 3 images -->
+                <div class="col-span-1">
+                    <img 
+                        src="/pantai_watukaka.png" 
+                        alt="Pantai Watukaka 1"
+                        class="w-full h-64 object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                </div>
+                <div class="col-span-2">
+                    <img 
+                        src="/pantai_watukaka.png" 
+                        alt="Pantai Watukaka 2"
+                        class="w-full h-64 object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                </div>
+                <div class="col-span-1">
+                    <img 
+                        src="/pantai_watukaka.png" 
+                        alt="Pantai Watukaka 3"
+                        class="w-full h-64 object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                </div>
+                
+                <!-- Row 2: 4 images -->
+                <div class="col-span-1">
+                    <img 
+                        src="/pantai_watukaka.png" 
+                        alt="Pantai Watukaka 4"
+                        class="w-full h-48 object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                </div>
+                <div class="col-span-1">
+                    <img 
+                        src="/pantai_watukaka.png" 
+                        alt="Pantai Watukaka 5"
+                        class="w-full h-48 object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                </div>
+                <div class="col-span-1">
+                    <img 
+                        src="/pantai_watukaka.png" 
+                        alt="Pantai Watukaka 6"
+                        class="w-full h-48 object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                </div>
+                <div class="col-span-1">
+                    <img 
+                        src="/pantai_watukaka.png" 
+                        alt="Pantai Watukaka 7"
+                        class="w-full h-48 object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                </div>
+            </div>
+            
+            <!-- View More Button -->
+             <div class="text-center mt-12">
+                <a 
+                    href="/artikel"
+                    class="inline-flex bg-doha-20 py-2 hover:bg-doha-100 hover:text-doha-20 px-6 text-xl rounded-full items-center text-doha-50 transition-colors duration-300 group border border-doha-50"
+                >
+                    Lihat Selengkapnya
+                    <svg class="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+            </div>
         </div>
     </section>
 
+    <Sponsor/>
 
 </Layout>
