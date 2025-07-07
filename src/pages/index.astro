@@ -53,7 +53,7 @@ const getFlexRatio = (pair: { number: any; label: string; color: string; }[]) =>
 ---
 
 <Layout>
-    <section class="min-h-screen relative bg-doha-20">
+    <section class="min-h-[140vh] relative bg-doha-20 z-20">
         <div class="lg:mx-20 px-4 py-14">
             <div class="grid lg:grid-cols-3 gap-12 items-center">
                 <div class="space-y-8 lg:col-span-2">
@@ -96,10 +96,14 @@ const getFlexRatio = (pair: { number: any; label: string; color: string; }[]) =>
                 </div>
             </div>
         </div>
-        <div class="w-full relative -top-40 -z-0 h-96 bg-doha-50"></div>
+        <div class="w-full absolute bottom-0 -z-0 h-96 bg-doha-50"></div>
     </section>
-    <section class="min-h-screen relative -top-30 bg-doha-20">
-        <div class="lg:mx-20 px-4 pt-14">
+    <section class="min-h-screen relative bg-doha-20">
+        <div>
+            <img src="/ornamen.svg" alt="Ornamen" class="absolute w-1/3 -top-30 -right-32 h-auto tranasform rotate-[13.57deg]">
+            <img src="/ornamen.svg" alt="Ornamen" class="absolute w-1/3 bottom-22 -left-32 h-auto transform rotate-[73.2deg]">
+        </div>
+        <div class="lg:mx-20 px-4 pt-14 relative z-10">
             <p class="text-[20px] font-[400] text-doha-50 relative pl-16">
                 <span class="absolute left-0 top-1/2 w-12 h-[1px] bg-doha-50 transform -translate-y-1/2"></span>
                 Seputar Tim
@@ -119,11 +123,12 @@ const getFlexRatio = (pair: { number: any; label: string; color: string; }[]) =>
             </div>
         </div>
     </section>
-    <div class="lg:w-[120%] lg:-left-[10%] -top-30 relative overflow-x-hidden">
+    <div class="lg:w-[120%] lg:-left-[10%] relative overflow-x-hidden">
         <img src="/divider.svg" alt="divider"  class="w-full">
     </div>
 
-    <section class="lg:mx-20 px-4 py-14 grid grid-cols-2 min-h-screen relative -top-30 bg-doha-20">
+    <section class="lg:mx-20 px-4 pt-14 pb-20 grid grid-cols-2 min-h-screen relative bg-doha-20">
+        <img src="/ornamen.svg" alt="Ornamen" class="absolute w-1/3 -bottom-20 -left-32 h-auto transform rotate-[13.57deg]">
         <div class="col-span-1">
 
         </div>
@@ -160,7 +165,7 @@ const getFlexRatio = (pair: { number: any; label: string; color: string; }[]) =>
             </div>
         </div>
     </section>
-    <section class="min-h-screen relative bg-doha-50">
+    <section class="min-h-screen relative bg-doha-50 z-20">
         <div class="lg:mx-20 px-4 pt-27">
             <div class="flex items-center pb-16 gap-4">
                 <h1 class="text-[42px] w-full leading-[100%] font-extrabold text-doha-20">Program Kerja Unggulan</h1>
@@ -211,8 +216,12 @@ const getFlexRatio = (pair: { number: any; label: string; color: string; }[]) =>
         </div>
     </section>
     <!-- Article Section -->
-    <section class="bg-doha-20 py-20">
-        <div class="lg:mx-20 px-4">
+    <section class="bg-doha-20 py-20 relative">
+        <div>
+            <img src="/ornamen.svg" alt="Ornamen" class="absolute w-1/3 -top-30 -right-32 h-auto tranasform rotate-[13.57deg]">
+            <img src="/ornamen.svg" alt="Ornamen" class="absolute w-1/3 bottom-22 -left-32 h-auto transform rotate-[73.2deg]">
+        </div>
+        <div class="lg:mx-20 px-4 relative z-10">
             <!-- Section Header -->
             <div class="flex items-center gap-4 mb-12">
                 <h1 class="text-[42px] leading-[100%] font-extrabold text-doha-50">Artikel Pilihan</h1>
