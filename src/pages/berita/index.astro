@@ -1,0 +1,134 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Article from '../../components/Article.astro';
+import HorizontalArticle from '../../components/HorizontalArticle.astro';
+import { getFeaturedNews, getOtherNews } from '../../data/berita.js';
+
+// Get news data from centralized source
+const featuredNews = getFeaturedNews();
+const otherNews = getOtherNews();
+---
+
+<Layout>
+    <!-- Background decorative pattern -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none">
+        <div class="grid grid-cols-12 gap-4 h-full">
+            {Array.from({length: 144}).map((_, i) => (
+                <div class={`w-full h-8 ${i % 5 === 0 ? 'bg-gray-400' : 'bg-transparent'}`}></div>
+            ))}
+        </div>
+    </div>
+
+    <div class="relative lg:mx-20 px-4 py-14">
+        <div class="mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <h1 class="text-4xl lg:text-[42px] font-extrabold text-black mb-16">
+                    Berita Laboya Barat
+                </h1>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+                
+                <!-- Left Column - Featured Articles -->
+                <div class="lg:col-span-2 space-y-12">
+                    
+                    <!-- Featured Large Article -->
+                    {featuredNews.length > 0 && (
+                        <Article
+                            image={featuredNews[0].image}
+                            imageAlt={featuredNews[0].imageAlt}
+                            title={featuredNews[0].title}
+                            description={featuredNews[0].excerpt}
+                            date={featuredNews[0].date}
+                            link={featuredNews[0].link}
+                        />
+                    )}
+
+                    <!-- Additional Featured Articles -->
+                    {featuredNews.slice(1).length > 0 && (
+                        <div class="space-y-8">
+                            {featuredNews.slice(1).map(news => (
+                                <Article
+                                    image={news.image}
+                                    imageAlt={news.imageAlt}
+                                    title={news.title}
+                                    description={news.excerpt}
+                                    date={news.date}
+                                    link={news.link}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                <!-- Right Column - Other News -->
+                <div class="lg:col-span-2">
+                    <div class="p-6">
+                        <!-- Berita Terbaru Section -->
+                        <h3 class="text-[28px] font-semibold text-black border-b-4 inline">Berita Terbaru</h3>
+                        
+                        <div class="space-y-6 mb-16 mt-6">
+                            {featuredNews.map(news => (
+                                <HorizontalArticle
+                                    image={news.image}
+                                    imageAlt={news.imageAlt}
+                                    title={news.title}
+                                    description={news.excerpt}
+                                    date={news.date}
+                                    link={news.link}
+                                />
+                            ))}
+                        </div>
+
+                        <!-- Berita Lainnya Section -->
+                        <h3 class="text-[28px] font-semibold text-black border-b-4 inline">Berita Lainnya</h3>
+                        
+                        <div class="space-y-6 mt-6">
+                            {otherNews.map(news => (
+                                <HorizontalArticle
+                                    image={news.image}
+                                    imageAlt={news.imageAlt}
+                                    title={news.title}
+                                    description={news.excerpt}
+                                    date={news.date}
+                                    link={news.link}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    /* Line clamp utility for text truncation */
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Custom scrollbar for sidebar if needed */
+    .sidebar-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 2px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 2px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+</style>

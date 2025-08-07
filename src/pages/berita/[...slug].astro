@@ -1,0 +1,30 @@
+---
+import BeritaPost from '../../layouts/BeritaPost.astro';
+import { beritaData, getRelatedArticles } from '../../data/berita.js';
+
+export async function getStaticPaths() {
+    const paths = Object.keys(beritaData).map(slug => ({
+        params: { slug },
+        props: { 
+            newsData: beritaData[slug as keyof typeof beritaData],
+            relatedArticles: getRelatedArticles(slug)
+        }
+    }));
+    
+    return paths;
+}
+
+const { newsData, relatedArticles } = Astro.props;
+const { slug } = Astro.params;
+---
+
+<BeritaPost
+    title={newsData.title}
+    image={newsData.image}
+    imageAlt={newsData.imageAlt}
+    category={newsData.category}
+    date={newsData.date}
+    author={newsData.author}
+    content={newsData.content}
+    relatedArticles={relatedArticles}
+/>

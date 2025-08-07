@@ -1,0 +1,33 @@
+---
+import ProkerPost from '../../layouts/ProkerPost.astro';
+import { programs } from '../../data/proker.js';
+
+const { slug } = Astro.params;
+
+const program = programs.find(p => p.slug === slug);
+
+if (!program) {
+    return Astro.redirect('/404');
+}
+
+// Generate static paths for all programs
+export async function getStaticPaths() {
+    return programs.map(program => ({
+        params: { slug: program.slug }
+    }));
+}
+---
+
+<ProkerPost
+    title={program.title}
+    image={program.image}
+    imageAlt={program.imageAlt}
+    category={program.category}
+    location={program.location}
+    targetAudience={program.targetAudience}
+    description={program.description}
+    objectives={program.objectives}
+    solutions={program.solutions}
+    goals={program.goals}
+    gallery={program.gallery}
+/>

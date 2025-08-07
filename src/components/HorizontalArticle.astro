@@ -11,7 +11,7 @@ export interface Props {
 const { image, imageAlt, title, date, description, link } = Astro.props;
 ---
 
-<article class="bg-white rounded-2xl lg:max-h-[221px] overflow-hidden max-w-4xl mx-auto">
+<article class="bg-white border rounded-2xl lg:max-h-[221px] overflow-hidden max-w-4xl mx-auto">
     <div class="flex flex-col md:flex-row">
         <!-- Image Container -->
         <div class="md:w-1/2">
@@ -30,7 +30,7 @@ const { image, imageAlt, title, date, description, link } = Astro.props;
             </h3>
             
             <!-- Date -->
-            <div class="mb-4">
+            <div class="mb-2">
                 <span class="text-doha-50 text-md">{date}</span>
             </div>
             

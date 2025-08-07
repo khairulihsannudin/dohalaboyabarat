@@ -1,0 +1,295 @@
+---
+// filepath: c:\Users\khair\Downloads\dohalaboyabarat\src\pages\proker\index.astro
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+import { generateSamplePrograms } from '../../data/proker.js';
+
+// Use shared data
+const samplePrograms = generateSamplePrograms(25); // Generate 25 programs for pagination demo
+
+// Rest of your existing code stays exactly the same...
+const defaultItemsPerPage = 10;
+const defaultFilter = 'all';
+
+function getFilteredPrograms(programs, filter) {
+    return filter === 'all' 
+        ? programs 
+        : programs.filter(program => program.category === filter);
+}
+
+function getPaginatedPrograms(programs, page, itemsPerPage) {
+    const startIndex = (page - 1) * itemsPerPage;
+    return programs.slice(startIndex, startIndex + itemsPerPage);
+}
+
+const initialFilteredPrograms = getFilteredPrograms(samplePrograms, defaultFilter);
+const initialDisplayPrograms = getPaginatedPrograms(initialFilteredPrograms, 1, defaultItemsPerPage);
+---
+<Layout>
+    <section class="lg:mx-20 px-4 py-14">
+        <h1 class="text-center font-extrabold text-[42px] mb-16">Bakti kami <span class="text-doha-50">untuk Tanah Marapu</span></h1>
+        
+        <!-- Filter Tabs -->
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
+            <ul class="flex flex-wrap gap-4 mb-4 lg:mb-0" id="filter-tabs">
+                <li>
+                    <button 
+                        class="filter-btn px-6 py-2 text-base rounded-full border border-doha-50 bg-doha-100 text-doha-20 transition-all duration-300"
+                        data-filter="all"
+                    >
+                        Semua Program
+                    </button>
+                </li>
+                <li>
+                    <button 
+                        class="filter-btn px-6 py-2 text-base rounded-full border border-doha-50 bg-doha-20 text-doha-50 hover:bg-doha-100 hover:text-doha-20 transition-all duration-300"
+                        data-filter="Klaster Saintek"
+                    >
+                        Klaster Saintek
+                    </button>
+                </li>
+                <li>
+                    <button 
+                        class="filter-btn px-6 py-2 text-base rounded-full border border-doha-50 bg-doha-20 text-doha-50 hover:bg-doha-100 hover:text-doha-20 transition-all duration-300"
+                        data-filter="Klaster Soshum"
+                    >
+                        Klaster Soshum
+                    </button>
+                </li>
+                <li>
+                    <button 
+                        class="filter-btn px-6 py-2 text-base rounded-full border border-doha-50 bg-doha-20 text-doha-50 hover:bg-doha-100 hover:text-doha-20 transition-all duration-300"
+                        data-filter="Klaster Agro"
+                    >
+                        Klaster Agro
+                    </button>
+                </li>
+                <li>
+                    <button 
+                        class="filter-btn px-6 py-2 text-base rounded-full border border-doha-50 bg-doha-20 text-doha-50 hover:bg-doha-100 hover:text-doha-20 transition-all duration-300"
+                        data-filter="Klaster Medika"
+                    >
+                        Klaster Medika
+                    </button>
+                </li>
+            </ul>
+            
+            <!-- Show per page selector -->
+            <div class="flex items-center gap-3">
+                <label for="per-page" class="text-black text-base whitespace-nowrap">Tampilkan:</label>
+                <select 
+                    id="per-page" 
+                    class="px-4 py-2 border text-base border-gray-300 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-doha-50 focus:border-doha-50 transition-all duration-300"
+                >
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="all">Semua</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Results Info -->
+        <div class="mb-6">
+            <p id="results-info" class="text-gray-600">
+                Menampilkan 1-{Math.min(defaultItemsPerPage, initialFilteredPrograms.length)} dari {initialFilteredPrograms.length} program
+            </p>
+        </div>
+    </section>
+    
+    <!-- Programs Grid -->
+    <section class="lg:mx-20 px-4 pb-14">
+        <div id="programs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {initialDisplayPrograms.map((program) => (
+                <div data-category={program.category} data-id={program.id}>
+                    <Card 
+                        image={program.image}
+                        imageAlt={program.imageAlt}
+                        category={program.category}
+                        title={program.title}
+                        location={program.location}
+                        targetAudience={program.targetAudience}
+                        link={program.link}
+                    />
+                </div>
+            ))}
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="flex justify-center items-center gap-2 mt-12">
+            <button 
+                id="prev-btn"
+                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled
+            >
+                ← Sebelumnya
+            </button>
+            
+            <div id="page-numbers" class="flex gap-1">
+                <!-- Page numbers will be generated here -->
+            </div>
+            
+            <button 
+                id="next-btn"
+                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                Selanjutnya →
+            </button>
+        </div>
+    </section>
+</Layout>
+
+<script define:vars={{ samplePrograms }}>
+    // Pagination state
+    let currentFilter = 'all';
+    let currentPage = 1;
+    let itemsPerPage = 10;
+    let allPrograms = samplePrograms;
+    let filteredPrograms = [];
+
+    // DOM elements
+    const programsContainer = document.getElementById('programs-container');
+    const resultsInfo = document.getElementById('results-info');
+    const pagination = document.getElementById('pagination');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const pageNumbers = document.getElementById('page-numbers');
+    const perPageSelect = document.getElementById('per-page');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        setupEventListeners();
+        updateDisplay();
+    });
+
+    function setupEventListeners() {
+        // Filter buttons
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active filter button
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-doha-100', 'text-doha-20');
+                    b.classList.add('bg-doha-20', 'text-doha-50');
+                });
+                this.classList.remove('bg-doha-20', 'text-doha-50');
+                this.classList.add('bg-doha-100', 'text-doha-20');
+                
+                currentFilter = this.dataset.filter;
+                currentPage = 1;
+                updateDisplay();
+            });
+        });
+
+        // Per page selector
+        perPageSelect.addEventListener('change', function() {
+            // FIX: Update itemsPerPage AFTER filtering
+            currentPage = 1;
+            updateDisplay(); // Call updateDisplay first to get correct filteredPrograms
+        });
+
+        // Pagination buttons
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateDisplay();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredPrograms.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateDisplay();
+            }
+        });
+    }
+
+    function updateDisplay() {
+        // Filter programs FIRST
+        filteredPrograms = currentFilter === 'all' 
+            ? allPrograms 
+            : allPrograms.filter(program => program.category === currentFilter);
+
+        // THEN update items per page based on filtered results
+        if (perPageSelect.value === 'all') {
+            itemsPerPage = filteredPrograms.length; // Use filtered length, not total
+        } else {
+            itemsPerPage = parseInt(perPageSelect.value);
+        }
+
+        // Calculate pagination based on FILTERED results
+        const totalPages = itemsPerPage >= filteredPrograms.length ? 1 : Math.ceil(filteredPrograms.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, filteredPrograms.length);
+
+        // Show/hide cards based on current filter and pagination
+        const allCardContainers = programsContainer.querySelectorAll('[data-category]');
+        let visibleCount = 0;
+        
+        allCardContainers.forEach(container => {
+            const cardCategory = container.dataset.category;
+            const cardId = parseInt(container.dataset.id);
+            
+            // Check if card matches current filter
+            const matchesFilter = currentFilter === 'all' || cardCategory === currentFilter;
+            
+            if (matchesFilter) {
+                // Find position in filtered results
+                const positionInFiltered = filteredPrograms.findIndex(p => p.id === cardId);
+                
+                // Check if card should be visible on current page
+                const shouldShow = positionInFiltered >= startIndex && positionInFiltered < endIndex;
+                
+                if (shouldShow) {
+                    container.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    container.style.display = 'none';
+                }
+            } else {
+                container.style.display = 'none';
+            }
+        });
+
+        // Update results info
+        updateResultsInfo(startIndex + 1, startIndex + visibleCount, filteredPrograms.length);
+
+        // Update pagination
+        updatePagination(totalPages);
+    }
+
+    function updateResultsInfo(start, end, total) {
+        resultsInfo.textContent = `Menampilkan ${start}-${end} dari ${total} program`;
+    }
+
+    function updatePagination(totalPages) {
+        // IMPROVED: Hide pagination when showing all or only 1 page needed
+        if (totalPages <= 1) {
+            pagination.style.display = 'none';
+            return;
+        }
+        pagination.style.display = 'flex';
+
+        // Update prev/next buttons
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+
+        // Generate page numbers
+        pageNumbers.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `px-3 py-2 rounded-lg transition-colors duration-300 ${
+                i === currentPage 
+                    ? 'bg-doha-50 text-white' 
+                    : 'text-gray-600 hover:bg-gray-100'
+            }`;
+            pageBtn.textContent = i;
+            pageBtn.addEventListener('click', () => {
+                currentPage = i;
+                updateDisplay();
+            });
+            pageNumbers.appendChild(pageBtn);
+        }
+    }
+</script>
